@@ -1,0 +1,56 @@
+# ----------------------------
+# Node / React (frontend)
+# ----------------------------
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.DS_Store
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+
+# ----------------------------
+# Python / FastAPI (backend)
+# ----------------------------
+backend/venv/
+backend/__pycache__/
+backend/*.pyc
+backend/.env
+backend/.DS_Store
+backend/.pytest_cache/
+backend/.mypy_cache/
+backend/.ruff_cache/
+backend/.coverage
+backend/htmlcov/
+
+# ----------------------------
+# macOS system files
+# ----------------------------
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.Spotlight-V100
+.Trashes
+*.icloud
+*.apdisk
+
+# ----------------------------
+# VSCode / IDE settings (optional)
+# ----------------------------
+.vscode/
+.idea/
+*.code-workspace
+
+# ----------------------------
+# General
+# ----------------------------
+.env
+*.log
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.db
+*.bak
+
