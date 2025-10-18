@@ -1,0 +1,40 @@
+# Node / React
+node_modules/
+build/
+.env
+
+# Python / FastAPI
+venv/
+__pycache__/
+*.pyc
+*.pkl
+*.joblib
+
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.Spotlight-V100
+.Trashes
+.fseventsd
+.TemporaryItems
+.apdisk
+
+# Windows system files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# OS-specific
+.DS_Store
+.idea/
+.vscode/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
