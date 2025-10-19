@@ -12,11 +12,6 @@
 #async def root():
  #   return {"message": "FastAPI backend connected successfully"}
 #
-#@app.get("/predict/{value}")
-#async def predict(value: int):
- #   # simple mock model logic
-  #  result = "spam" if value % 2 == 0 else "not spam"
-   # return {"prediction": result}
 
 from fastapi import FastAPI, HTTPException, Request
 from pydantic import BaseModel
@@ -24,20 +19,10 @@ from fastapi.responses import JSONResponse
 from joblib import load
 import time
 from pathlib import Path
-from models.log_reg import clean_text  # import your cleaning function
 
-app = FastAPI()
+# Absolute import for log_reg
+from backend.models.log_reg import clean_text
 
-class Email(BaseModel):
-    job: str
-    inquiryBody: str
-
-def get_db():
-    return {"db": "Simulated database connection"}
-
-# backend/main.py
-
-# Initialize FastAPI app
 app = FastAPI(title="Spam Email Detection API")
 
 MODEL_DIR = Path(__file__).resolve().parent / "models" / "saved_models"
@@ -48,43 +33,13 @@ class EmailInput(BaseModel):
     subject: str
     body: str
 
-@app.middleware("http")
-async def log_requests(request: Request, call_next):
-    start_time = time.time()
-    response = await call_next(request)
-    duration = time.time() - start_time
-    print(f"Request: {request.url} completed in {duration:.3f}s")
-    return response
-
-@app.exception_handler(HTTPException)
-async def http_exception_handler(request: Request, exc: HTTPException):
-    return JSONResponse(
-        status_code=exc.status_code,
-        content={"error": exc.detail}
-    )
-
 @app.get("/")
 def read_root():
     return {"message": "Spam Detection API is running"}
 
 @app.post("/detect-spam/")
 def detect_spam(email: EmailInput):
-    text = email.subject + " " + email.body
-    text = clean_text(text)
-
-    if not text.strip():
-        raise HTTPException(status_code=400, detail="Empty email text provided")
-
-    X = vectorizer.transform([text])
-    y_prob = model.predict_proba(X)[0, 1]
-    label = "Spam" if y_prob >= 0.5 else "Ham"
-
-    return {"label": label, "probability": round(float(y_prob), 3)}
-
-@app.get("/detect-spam/")
-def detect_spam_get(subject: str, body: str):
-    text = clean_text(subject + " " + body)
-
+    text = clean_text(email.subject + " " + email.body)
     if not text.strip():
         raise HTTPException(status_code=400, detail="Empty email text provided")
 

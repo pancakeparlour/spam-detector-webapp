@@ -11,9 +11,9 @@ import os
 from pathlib import Path
 
 # Dataset Configuration
-DATA_DIR = Path("datasets")
+DATA_DIR = Path(__file__).resolve().parent / "datasets"
 RAW_DIR = DATA_DIR / "raw_datasets"
-CLEANED_DIR = DATA_DIR / "cleaned_datasets"
+LEANED_DIR = DATA_DIR / "cleaned_datasets"
 
 def setup_directories():
     # Ensure necessary directories exist

@@ -17,7 +17,13 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report, roc_auc_score, accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.preprocessing import StandardScaler
-from preprocessing import load_dataset, clean_text, extract_features
+
+from backend.models.preprocessing import load_dataset, clean_text, extract_features
+
+
+
+
+
 
 MODEL_DIR = Path("saved_models")
 MODEL_DIR.mkdir(exist_ok=True)
