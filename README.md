@@ -1,3 +1,5 @@
-need to flesh this out
+dev notes:
+- only use relative paths for imports
 
-- only use relative paths for imports only
+to fill in:
+- how to run the frontend, backend, how to regenerate model artifacts
