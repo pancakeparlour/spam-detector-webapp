@@ -1,5 +1,17 @@
 import React, { useState } from 'react';
-import { Box, Button, Typography, Alert} from '@mui/material';
+import {
+  Alert,
+  Box,
+  Button,
+  FormControl,
+  FormControlLabel,
+  FormHelperText,
+  FormLabel,
+  Radio,
+  RadioGroup,
+  TextField,
+  Typography,
+} from '@mui/material';
 import axios from 'axios';
 
 function InquiryForm() {
@@ -110,60 +122,76 @@ function InquiryForm() {
           flexDirection: { xs: 'column', md: 'row' },
         }}
       >
-        <Box sx={{ flex: 1 }}>
+        <Box
+          sx={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 2,
+          }}
+        >
           <Typography variant="h6" component="h3" gutterBottom>
             Your details
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-            Ensure your contact information is accurate so we can follow up.
+            Make sure your contact information is accurate so we can follow up.
           </Typography>
 
-          <label htmlFor="firstName">First Name:</label>
-          <input
-            type="text"
-            placeholder="Joe"
+          <TextField
+            label="First Name"
             name="firstName"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
+            placeholder="Joe"
+            fullWidth
+            error={Boolean(defaultErrors.firstName)}
+            helperText={defaultErrors.firstName}
           />
-          {defaultErrors.firstName && <div>{defaultErrors.firstName}</div>}
-          <br />
 
-          <label htmlFor="lastName">Last Name:</label>
-          <input
-            type="text"
-            placeholder="Doe"
+          <TextField
+            label="Last Name"
             name="lastName"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
+            placeholder="Doe"
+            fullWidth
+            error={Boolean(defaultErrors.lastName)}
+            helperText={defaultErrors.lastName}
           />
-          {defaultErrors.lastName && <div>{defaultErrors.lastName}</div>}
-          <br />
 
-          <label htmlFor="emailAddress">Email address:</label>
-          <input
-            type="text"
-            placeholder="joe.do@mail.com"
+          <TextField
+            label="Email address"
             name="emailAddress"
+            type="email"
+            placeholder="joe.do@mail.com"
             value={emailAddress}
             onChange={(e) => setEmailAddress(e.target.value)}
+            fullWidth
+            error={Boolean(defaultErrors.emailAddress)}
+            helperText={defaultErrors.emailAddress}
           />
-          {defaultErrors.emailAddress && <div>{defaultErrors.emailAddress}</div>}
-          <br />
 
-          <label htmlFor="phoneNumber">Phone number:</label>
-          <input
-            type="text"
-            placeholder="0123 456 789"
+          <TextField
+            label="Phone number"
             name="phoneNumber"
+            type="tel"
+            placeholder="0123 456 789"
             value={phoneNumber}
             onChange={(e) => setPhoneNumber(e.target.value)}
+            fullWidth
+            error={Boolean(defaultErrors.phoneNumber)}
+            helperText={defaultErrors.phoneNumber}
           />
-          {defaultErrors.phoneNumber && <div>{defaultErrors.phoneNumber}</div>}
-          <br />
         </Box>
 
-        <Box sx={{ flex: 1 }}>
+        <Box
+          sx={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 2,
+          }}
+        >
           <Typography variant="h6" component="h3" gutterBottom>
             Inquiry
           </Typography>
@@ -171,53 +199,51 @@ function InquiryForm() {
             Select a role and share what you would like us to know.
           </Typography>
 
-          <div>
-            <label htmlFor="jobRole">I'm inquiring about:</label> <br />
-            <input
-              type="radio"
+          <FormControl
+            component="fieldset"
+            error={Boolean(defaultErrors.jobRole)}
+            sx={{ mb: 3 }}
+          >
+            <FormLabel component="legend">I'm inquiring about:</FormLabel>
+            <RadioGroup
+              row
               name="jobRole"
-              value="Lead Designer"
-              checked={jobRole === 'Lead Designer'}
+              value={jobRole}
               onChange={(e) => setJobRole(e.target.value)}
-            />
-            {' '}
-            Lead Designer
-            <input
-              type="radio"
-              name="jobRole"
-              value="Designer"
-              checked={jobRole === 'Designer'}
-              onChange={(e) => setJobRole(e.target.value)}
-            />
-            {' '}
-            Designer
-            <input
-              type="radio"
-              name="jobRole"
-              value="Receptionist"
-              checked={jobRole === 'Receptionist'}
-              onChange={(e) => setJobRole(e.target.value)}
-            />
-            {' '}
-            Receptionist
-            {defaultErrors.jobRole && <div>{defaultErrors.jobRole}</div>}
-          </div>
+            >
+              <FormControlLabel
+                value="Lead Designer"
+                control={<Radio />}
+                label="Lead Designer"
+              />
+              <FormControlLabel
+                value="Designer"
+                control={<Radio />}
+                label="Designer"
+              />
+              <FormControlLabel
+                value="Receptionist"
+                control={<Radio />}
+                label="Receptionist"
+              />
+            </RadioGroup>
+            {defaultErrors.jobRole && (
+              <FormHelperText>{defaultErrors.jobRole}</FormHelperText>
+            )}
+          </FormControl>
 
-          <br />
-
-          <div>
-            <label htmlFor="inquiryBody">Inquiry message:</label> <br />
-            <textarea
-              name="inquiryBody"
-              id="inquiryBody"
-              cols="80"
-              rows="10"
-              placeholder="Write your inquiry here..."
-              value={inquiryBody}
-              onChange={(e) => setInquiryBody(e.target.value)}
-            />
-            {defaultErrors.inquiryBody && <div>{defaultErrors.inquiryBody}</div>}
-          </div>
+          <TextField
+            label="Inquiry message"
+            name="inquiryBody"
+            placeholder="Write your inquiry here..."
+            value={inquiryBody}
+            onChange={(e) => setInquiryBody(e.target.value)}
+            fullWidth
+            multiline
+            minRows={6}
+            error={Boolean(defaultErrors.inquiryBody)}
+            helperText={defaultErrors.inquiryBody}
+          />
         </Box>
       </Box>
 
