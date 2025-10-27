@@ -3,37 +3,52 @@ import {
   AppBar,
   Box,
   Button,
+  Container,
   Drawer,
   IconButton,
   List,
-  ListItemIcon,
+  ListItemButton,
   ListItemText,
   Toolbar,
   Typography,
-  ListItemButton,
 } from '@mui/material';
 import {
-  DataUsage as DataUsageIcon,
+  KeyboardArrowDown as KeyboardArrowDownIcon,
   Menu as MenuIcon,
+  PersonOutline as PersonOutlineIcon,
+  Search as SearchIcon,
 } from '@mui/icons-material';
 
 const navItems = [
-  { label: 'Data visualisation', icon: <DataUsageIcon /> },
+  { label: 'About Us', hasMenu: true },
+  { label: 'Hmm', hasMenu: true },
 ];
 
 function NavBar() {
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
-  const toggleDrawer = (open) => () => {
-    setDrawerOpen(open);
+  const handleDrawerToggle = () => {
+    setMobileOpen((prev) => !prev);
   };
 
   const drawerContent = (
-    <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
+    <Box
+      sx={{
+        width: 260,
+        p: 2,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2,
+      }}
+      role="presentation"
+      onClick={handleDrawerToggle}
+    >
+      <Typography variant="h6" sx={{ fontWeight: 700 }}>
+        PixelNestLabs
+      </Typography>
       <List>
         {navItems.map((item) => (
           <ListItemButton key={item.label}>
-            <ListItemIcon>{item.icon}</ListItemIcon>
             <ListItemText primary={item.label} />
           </ListItemButton>
         ))}
@@ -43,27 +58,94 @@ function NavBar() {
 
   return (
     <>
-      <AppBar position="fixed" elevation={0}>
-        <Toolbar>
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            onClick={toggleDrawer(true)}
-            sx={{ mr: 2 }}
+      <AppBar
+        position="sticky"
+        color="transparent"
+        elevation={0}
+        sx={{
+          borderBottom: 1,
+          borderColor: 'divider',
+          backgroundColor: 'background.paper',
+        }}
+      >
+        <Toolbar disableGutters>
+          <Container
+            maxWidth="lg"
+            sx={{ display: 'flex', alignItems: 'center', gap: 2 }}
           >
-            <MenuIcon />
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{
+                fontWeight: 700,
+                letterSpacing: 1,
+                mr: { xs: 1, md: 4 },
+              }}
+            >
+              PixelNestLabs
+            </Typography>
+
+            <Box
+              sx={{
+                display: { xs: 'none', md: 'flex' },
+                alignItems: 'center',
+                gap: 2,
+              }}
+            >
+              {navItems.map((item) => (
+                <Button
+                  key={item.label}
+                  color="inherit"
+                  endIcon={
+                    item.hasMenu ? (
+                      <KeyboardArrowDownIcon fontSize="small" />
+                    ) : undefined
+                  }
+                  sx={{ fontWeight: 500, textTransform: 'none' }}
+                >
+                  {item.label}
+                </Button>
+              ))}
+            </Box>
+
+            <Box
+              sx={{
+                marginLeft: 'auto',
+                display: 'flex',
+                alignItems: 'center',
+            gap: 1,
+          }}
+        >
+          <IconButton color="inherit" size="large">
+            <SearchIcon />
           </IconButton>
-
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            PixelNest Labs Careers
-          </Typography>
-
-          <Button color="inherit">About</Button>
+          <IconButton color="inherit" size="large">
+            <PersonOutlineIcon />
+          </IconButton>
+              <IconButton
+                color="inherit"
+                size="large"
+                onClick={handleDrawerToggle}
+                sx={{ display: { xs: 'inline-flex', md: 'none' } }}
+                aria-label="open navigation menu"
+              >
+                <MenuIcon />
+              </IconButton>
+            </Box>
+          </Container>
         </Toolbar>
       </AppBar>
 
-      <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
+      <Drawer
+        anchor="left"
+        open={mobileOpen}
+        onClose={handleDrawerToggle}
+        ModalProps={{ keepMounted: true }}
+        sx={{
+          display: { xs: 'block', md: 'none' },
+          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 260 },
+        }}
+      >
         {drawerContent}
       </Drawer>
     </>
