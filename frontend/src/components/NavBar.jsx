@@ -14,14 +14,10 @@ import {
 } from '@mui/material';
 import {
   DataUsage as DataUsageIcon,
-  Home as HomeIcon,
-  Mail as MailIcon,
   Menu as MenuIcon,
 } from '@mui/icons-material';
 
 const navItems = [
-  { label: 'Home', icon: <HomeIcon /> },
-  { label: 'Inquire', icon: <MailIcon /> },
   { label: 'Data visualisation', icon: <DataUsageIcon /> },
 ];
 
