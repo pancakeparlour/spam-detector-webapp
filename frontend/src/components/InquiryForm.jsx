@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import InquiryResultPopup from './InquiryResultPopup';
 import {
   Alert,
   Box,
@@ -27,6 +28,10 @@ function InquiryForm() {
   const [jobRole, setJobRole] = useState('');
   const [inquiryBody, setInquiryBody] = useState('');
   const [defaultErrors, setDefaultErrors] = useState({});
+
+  // state for holding the result (fr data viz) from backend
+  const [resultData, setResultData] = useState(null);
+  const [resultOpen, setResultOpen] = useState(false);
 
   // form submission handler (what happens when user presses 'Submit')
   const submit = async (e) => {
@@ -60,7 +65,7 @@ function InquiryForm() {
 
       try {
         // try to post form data to backend
-        await axios.post('http://127.0.0.1:8000/inquiry', {
+        const response = await axios.post('http://127.0.0.1:8000/inquiry', {
           firstName,
           lastName,
           emailAddress,
@@ -70,6 +75,8 @@ function InquiryForm() {
         });
         // set the submit msg and reset the form
         setSubmitMessage('form submitted successfully!');
+        setResultData(response.data);
+        setResultOpen(true);
         resetForm();
       } catch (err) {
         // otherwise, show error message that we caught
@@ -107,10 +114,10 @@ function InquiryForm() {
       {/* Title box */}
       <Box>
         <Typography variant="h4" component="h2" gutterBottom>
-          Job Inquiry
+          Interested in a career with us?
         </Typography>
         <Typography variant="body1" color="text.secondary">
-          Provide your details so we can respond to your interest quickly.
+          Send us your details. We respond in minutes.
         </Typography>
       </Box>
 
@@ -249,11 +256,11 @@ function InquiryForm() {
 
       {/* Clear & Submit buttons box */}
       <Box sx={{ display: 'flex', gap: 2 }}>
-        <Button type="button" onClick={resetForm} variant="contained" color="inherit">
+        <Button type="button" onClick={resetForm} variant="outlined" color="primary">
           Clear
         </Button>
 
-        <Button type="submit" variant="contained" color="inherit">
+        <Button type="submit" variant="contained" color="primary">
           Submit
         </Button>
       </Box>
@@ -262,6 +269,13 @@ function InquiryForm() {
       {submitMessage && <Alert severity="success">{submitMessage}</Alert>}
       {submitError && <Alert severity="error">{submitError}</Alert>}
       {/* END REMOVE */}
+
+      {/* The dialog popup fr showing data viz */}
+      <InquiryResultPopup
+        open={resultOpen}
+        onClose={() => setResultOpen(false)}
+        result={resultData}
+      />
     </Box>
   );
 }

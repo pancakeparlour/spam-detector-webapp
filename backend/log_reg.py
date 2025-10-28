@@ -78,6 +78,18 @@ def main():
     # for ROC AUC calculation.
     evaluate_model(y_train, y_train_pred, y_test, y_test_pred, clf.predict_proba(X_test)[:, 1])
     
+    # some metrics stored in a dictionary for further use if needed
+    metrics = {
+    "train_accuracy": accuracy_score(y_train, y_train_pred),
+    "test_accuracy": accuracy_score(y_test, y_test_pred),
+    "precision": precision_score(y_test, y_test_pred),
+    "recall": recall_score(y_test, y_test_pred),
+    "f1": f1_score(y_test, y_test_pred),
+    "roc_auc": roc_auc_score(y_test, clf.predict_proba(X_test)[:, 1]),
+}
+    # we'll save the metrics for later
+    joblib.dump(metrics, MODEL_DIR / 'clf_metrics.joblib')
+
     # Save model and vectorizer
     joblib.dump(clf, MODEL_DIR / 'clf_model.joblib')
     joblib.dump(tfidf, MODEL_DIR / 'clf_vectorizer.joblib')
