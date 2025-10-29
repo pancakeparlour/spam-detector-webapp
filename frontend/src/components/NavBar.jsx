@@ -15,17 +15,16 @@ import {
 import {
   KeyboardArrowDown as KeyboardArrowDownIcon,
   Menu as MenuIcon,
-  PersonOutline as PersonOutlineIcon,
-  Search as SearchIcon,
 } from '@mui/icons-material';
+import AboutUsPopup from './AboutUsPopup';
 
 const navItems = [
-  { label: 'About Us', hasMenu: true },
-  { label: 'Hmm', hasMenu: true },
+  { label: 'About Us' },
 ];
 
 function NavBar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [aboutUsOpen, setAboutUsOpen] = useState(false); // moved inside component
 
   const handleDrawerToggle = () => {
     setMobileOpen((prev) => !prev);
@@ -48,7 +47,12 @@ function NavBar() {
       </Typography>
       <List>
         {navItems.map((item) => (
-          <ListItemButton key={item.label}>
+          <ListItemButton
+            key={item.label}
+            onClick={() => {
+              if (item.label === 'About Us') setAboutUsOpen(true);
+            }}
+          >
             <ListItemText primary={item.label} />
           </ListItemButton>
         ))}
@@ -90,6 +94,7 @@ function NavBar() {
                 display: { xs: 'none', md: 'flex' },
                 alignItems: 'center',
                 gap: 2,
+                marginLeft: 'auto',
               }}
             >
               {navItems.map((item) => (
@@ -101,6 +106,9 @@ function NavBar() {
                       <KeyboardArrowDownIcon fontSize="small" />
                     ) : undefined
                   }
+                  onClick={() => {
+                    if (item.label === 'About Us') setAboutUsOpen(true);
+                  }}
                   sx={{ fontWeight: 500, textTransform: 'none' }}
                 >
                   {item.label}
@@ -110,18 +118,11 @@ function NavBar() {
 
             <Box
               sx={{
-                marginLeft: 'auto',
                 display: 'flex',
                 alignItems: 'center',
-            gap: 1,
-          }}
-        >
-          <IconButton color="inherit" size="large">
-            <SearchIcon />
-          </IconButton>
-          <IconButton color="inherit" size="large">
-            <PersonOutlineIcon />
-          </IconButton>
+                gap: 1,
+              }}
+            >
               <IconButton
                 color="inherit"
                 size="large"
@@ -148,6 +149,12 @@ function NavBar() {
       >
         {drawerContent}
       </Drawer>
+
+      {/* About Us popup */}
+      <AboutUsPopup
+        open={aboutUsOpen}
+        onClose={() => setAboutUsOpen(false)}
+      />
     </>
   );
 }

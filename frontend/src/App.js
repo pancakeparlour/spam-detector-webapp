@@ -14,7 +14,7 @@ function App() {
           pt: { xs: 3, md: 5 },
           px: { xs: 2, md: 6 },
           pb: 6,
-          backgroundColor: 'background.default',
+          backgroundColor: '#e6f0ff',
           minHeight: '100vh',
         }}
       >
