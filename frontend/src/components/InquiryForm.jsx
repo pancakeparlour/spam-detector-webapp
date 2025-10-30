@@ -1,5 +1,22 @@
 import React, { useState } from 'react';
-import { Box, Button, Typography, Alert} from '@mui/material';
+import InquiryResultPopup from './InquiryResultPopup';
+import '../App.css';
+import {
+  Alert,
+  Box,
+  Button,
+  FormControl,
+  FormControlLabel,
+  FormHelperText,
+  FormLabel,
+  Radio,
+  RadioGroup,
+  TextField,
+  Typography,
+  Tooltip,
+  IconButton,
+} from '@mui/material';
+import { HelpOutline as HelpOutlineIcon } from '@mui/icons-material';
 import axios from 'axios';
 
 function InquiryForm() {
@@ -15,6 +32,13 @@ function InquiryForm() {
   const [jobRole, setJobRole] = useState('');
   const [inquiryBody, setInquiryBody] = useState('');
   const [defaultErrors, setDefaultErrors] = useState({});
+
+  // state for holding the result (fr data viz) from backend
+  const [resultData, setResultData] = useState(null);
+  const [resultOpen, setResultOpen] = useState(false);
+
+  // state to toggle help tooltips
+  const [showHelp, setShowHelp] = useState(false);
 
   // form submission handler (what happens when user presses 'Submit')
   const submit = async (e) => {
@@ -42,13 +66,11 @@ function InquiryForm() {
     setDefaultErrors(errors);
 
     if (Object.keys(errors).length === 0) {
-      // alert('Form submitted');
       setSubmitMessage('');
       setSubmitError('');
 
       try {
-        // try to post form data to backend
-        await axios.post('http://127.0.0.1:8000/inquiry', {
+        const response = await axios.post('http://127.0.0.1:8000/inquiry', {
           firstName,
           lastName,
           emailAddress,
@@ -56,11 +78,12 @@ function InquiryForm() {
           jobRole,
           inquiryBody,
         });
-        // set the submit msg and reset the form
+
         setSubmitMessage('form submitted successfully!');
+        setResultData(response.data);
+        setResultOpen(true);
         resetForm();
       } catch (err) {
-        // otherwise, show error message that we caught
         setSubmitError('coulnt submit form, pls try again.');
         console.error(err);
       }
@@ -79,164 +102,272 @@ function InquiryForm() {
   };
 
   return (
-    <Box
-      component="form"
-      onSubmit={submit}
-      sx={{
-        backgroundColor: 'background.paper',
-        p: 4,
-        borderRadius: 2,
-        boxShadow: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 3,
-      }}
-    >
-      {/* Title box */}
-      <Box>
-        <Typography variant="h4" component="h2" gutterBottom>
-          Job Inquiry
-        </Typography>
-        <Typography variant="body1" color="text.secondary">
-          Provide your details so we can respond to your interest quickly.
-        </Typography>
-      </Box>
-
-      {/* Form Content ('Your Details' & 'Inquiry' sections)*/}
+    <>
       <Box
+        component="form"
+        onSubmit={submit}
         sx={{
+          backgroundColor: 'background.paper',
+          p: 4,
+          borderRadius: 2,
+          boxShadow: 1,
           display: 'flex',
-          gap: 4,
-          flexDirection: { xs: 'column', md: 'row' },
+          flexDirection: 'column',
+          gap: 3,
         }}
       >
-        <Box sx={{ flex: 1 }}>
-          <Typography variant="h6" component="h3" gutterBottom>
-            Your details
-          </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-            Ensure your contact information is accurate so we can follow up.
-          </Typography>
-
-          <label htmlFor="firstName">First Name:</label>
-          <input
-            type="text"
-            placeholder="Joe"
-            name="firstName"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-          />
-          {defaultErrors.firstName && <div>{defaultErrors.firstName}</div>}
-          <br />
-
-          <label htmlFor="lastName">Last Name:</label>
-          <input
-            type="text"
-            placeholder="Doe"
-            name="lastName"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-          />
-          {defaultErrors.lastName && <div>{defaultErrors.lastName}</div>}
-          <br />
-
-          <label htmlFor="emailAddress">Email address:</label>
-          <input
-            type="text"
-            placeholder="joe.do@mail.com"
-            name="emailAddress"
-            value={emailAddress}
-            onChange={(e) => setEmailAddress(e.target.value)}
-          />
-          {defaultErrors.emailAddress && <div>{defaultErrors.emailAddress}</div>}
-          <br />
-
-          <label htmlFor="phoneNumber">Phone number:</label>
-          <input
-            type="text"
-            placeholder="0123 456 789"
-            name="phoneNumber"
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-          />
-          {defaultErrors.phoneNumber && <div>{defaultErrors.phoneNumber}</div>}
-          <br />
+        {/* Help button at the top */}
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <IconButton
+            color="inherit"
+            size="large"
+            onClick={() => setShowHelp((prev) => !prev)}
+          >
+            <HelpOutlineIcon />
+          </IconButton>
         </Box>
 
-        <Box sx={{ flex: 1 }}>
-          <Typography variant="h6" component="h3" gutterBottom>
-            Inquiry
+        {/* Title box */}
+        <Box>
+          <Typography variant="h4" component="h2" gutterBottom>
+            Interested in a career with us?
           </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-            Select a role and share what you would like us to know.
+          <Typography variant="body1" color="text.secondary">
+            Fill out the inquiry form below, and we will let you know of any job opportunities.
           </Typography>
-
-          <div>
-            <label htmlFor="jobRole">I'm inquiring about:</label> <br />
-            <input
-              type="radio"
-              name="jobRole"
-              value="Lead Designer"
-              checked={jobRole === 'Lead Designer'}
-              onChange={(e) => setJobRole(e.target.value)}
-            />
-            {' '}
-            Lead Designer
-            <input
-              type="radio"
-              name="jobRole"
-              value="Designer"
-              checked={jobRole === 'Designer'}
-              onChange={(e) => setJobRole(e.target.value)}
-            />
-            {' '}
-            Designer
-            <input
-              type="radio"
-              name="jobRole"
-              value="Receptionist"
-              checked={jobRole === 'Receptionist'}
-              onChange={(e) => setJobRole(e.target.value)}
-            />
-            {' '}
-            Receptionist
-            {defaultErrors.jobRole && <div>{defaultErrors.jobRole}</div>}
-          </div>
-
-          <br />
-
-          <div>
-            <label htmlFor="inquiryBody">Inquiry message:</label> <br />
-            <textarea
-              name="inquiryBody"
-              id="inquiryBody"
-              cols="80"
-              rows="10"
-              placeholder="Write your inquiry here..."
-              value={inquiryBody}
-              onChange={(e) => setInquiryBody(e.target.value)}
-            />
-            {defaultErrors.inquiryBody && <div>{defaultErrors.inquiryBody}</div>}
-          </div>
         </Box>
+
+        {/* Form Content ('Your Details' & 'Inquiry' sections) */}
+        <Box
+          sx={{
+            display: 'flex',
+            gap: 4,
+            flexDirection: { xs: 'column', md: 'row' },
+          }}
+        >
+          <Box
+            sx={{
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 2,
+            }}
+          >
+            <Typography variant="h6" component="h3" gutterBottom>
+              Your details
+            </Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+              Make sure your contact information is accurate so we can follow up.
+            </Typography>
+
+            <Tooltip
+              title="Enter your first name here."
+              placement="right"
+              classes={{ tooltip: 'tooltip' }}
+              open={showHelp}
+            >
+              <TextField
+                label="First Name"
+                name="firstName"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                placeholder="Joe"
+                fullWidth
+                error={Boolean(defaultErrors.firstName)}
+                helperText={defaultErrors.firstName}
+              />
+            </Tooltip>
+
+            <Tooltip
+              title="Enter your last name here."
+              placement="right"
+              classes={{ tooltip: 'tooltip' }}
+              open={showHelp}
+            >
+              <TextField
+                label="Last Name"
+                name="lastName"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                placeholder="Doe"
+                fullWidth
+                error={Boolean(defaultErrors.lastName)}
+                helperText={defaultErrors.lastName}
+              />
+            </Tooltip>
+
+            <Tooltip
+              title="Enter a valid personal email address that you check regularly."
+              placement="right"
+              classes={{ tooltip: 'tooltip' }}
+              open={showHelp}
+            >
+              <TextField
+                label="Email address"
+                name="emailAddress"
+                type="email"
+                placeholder="joe.do@mail.com"
+                value={emailAddress}
+                onChange={(e) => setEmailAddress(e.target.value)}
+                fullWidth
+                error={Boolean(defaultErrors.emailAddress)}
+                helperText={defaultErrors.emailAddress}
+              />
+            </Tooltip>
+
+            <Tooltip
+              title="Enter your valid 10-digit phone number."
+              placement="right"
+              classes={{ tooltip: 'tooltip' }}
+              open={showHelp}
+            >
+              <TextField
+                label="Phone number"
+                name="phoneNumber"
+                type="tel"
+                placeholder="0123 456 789"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                fullWidth
+                error={Boolean(defaultErrors.phoneNumber)}
+                helperText={defaultErrors.phoneNumber}
+              />
+            </Tooltip>
+          </Box>
+
+          <Box
+            sx={{
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 2,
+            }}
+          >
+            <Typography variant="h6" component="h3" gutterBottom>
+              Inquiry
+            </Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+              Select a role and share what you would like us to know.
+            </Typography>
+
+            <FormControl
+              component="fieldset"
+              error={Boolean(defaultErrors.jobRole)}
+              sx={{ mb: 3 }}
+            >
+              <Tooltip
+                title="Select a role you would like to inquire about."
+                placement="top"
+                classes={{ tooltip: 'tooltip' }}
+                open={showHelp}
+              >
+                <FormLabel component="legend">I'm inquiring about:</FormLabel>
+              </Tooltip>
+              <RadioGroup
+                row
+                name="jobRole"
+                value={jobRole}
+                onChange={(e) => setJobRole(e.target.value)}
+              >
+                <FormControlLabel
+                  value="Lead Designer"
+                  control={<Radio />}
+                  label="Lead Designer"
+                />
+                <FormControlLabel
+                  value="Designer"
+                  control={<Radio />}
+                  label="Designer"
+                />
+                <FormControlLabel
+                  value="Receptionist"
+                  control={<Radio />}
+                  label="Receptionist"
+                />
+              </RadioGroup>
+              {defaultErrors.jobRole && (
+                <FormHelperText>{defaultErrors.jobRole}</FormHelperText>
+              )}
+            </FormControl>
+
+            <Tooltip
+              title="Include information about your career background, why you're interested, and any questions you have about the role."
+              placement="bottom"
+              classes={{ tooltip: 'tooltip' }}
+              open={showHelp}
+            >
+              <TextField
+                label="Inquiry message"
+                name="inquiryBody"
+                placeholder="Write your inquiry here..."
+                value={inquiryBody}
+                onChange={(e) => setInquiryBody(e.target.value)}
+                fullWidth
+                multiline
+                minRows={6}
+                error={Boolean(defaultErrors.inquiryBody)}
+                helperText={defaultErrors.inquiryBody}
+              />
+            </Tooltip>
+          </Box>
+        </Box>
+
+        {/* Clear & Submit buttons box */}
+        <Box sx={{ display: 'flex', gap: 2 }}>
+          <Tooltip
+              title="Click to clear all fields in the form."
+              placement="bottom"
+              classes={{ tooltip: 'tooltip' }}
+              open={showHelp}
+            >
+            <Button type="button" onClick={resetForm} variant="outlined" color="primary">
+              Clear
+            </Button>
+          </Tooltip>
+          
+          <Tooltip
+              title="Click to submit the form."
+              placement="right"
+              classes={{ tooltip: 'tooltip' }}
+              open={showHelp}
+            >
+          <Button type="submit" variant="contained" color="primary">
+            Submit
+          </Button>
+          </Tooltip>
+        </Box>
+
+        {/* REMOVE temporary success/error messages */}
+        {submitMessage && <Alert severity="success">{submitMessage}</Alert>}
+        {submitError && <Alert severity="error">{submitError}</Alert>}
+        {/* END REMOVE */}
+
+        {/* The dialog popup fr showing data viz */}
+        <InquiryResultPopup
+          open={resultOpen}
+          onClose={() => setResultOpen(false)}
+          result={resultData}
+        />
       </Box>
 
-      {/* Clear & Submit buttons box */}
-      <Box sx={{ display: 'flex', gap: 2 }}>
-        <Button type="button" onClick={resetForm} variant="contained" color="inherit">
-          Clear
-        </Button>
-
-        <Button type="submit" variant="contained" color="inherit">
-          Submit
-        </Button>
+      {/* Footer */}
+      <Box
+        component="footer"
+        sx={{
+          width: '100%',
+          py: 2,
+          textAlign: 'center',
+          borderTop: 1,
+          borderColor: 'divider',
+          mt: 4,
+          backgroundColor: 'background.paper',
+        }}
+      >
+        <Typography variant="body2" color="text.secondary">
+          Developed by XLR Web Solutions Ltd
+        </Typography>
       </Box>
-      
-      {/* REMOVE temporary success/error messages */}
-      {submitMessage && <Alert severity="success">{submitMessage}</Alert>}
-      {submitError && <Alert severity="error">{submitError}</Alert>}
-      {/* END REMOVE */}
-    </Box>
+    </>
   );
 }
 
