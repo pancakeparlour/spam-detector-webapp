@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import InquiryResultPopup from './InquiryResultPopup';
+import DataVisualizations from './DataVisualizations';
 import {
   Alert,
   Box,
@@ -28,10 +29,15 @@ function InquiryForm() {
   const [jobRole, setJobRole] = useState('');
   const [inquiryBody, setInquiryBody] = useState('');
   const [defaultErrors, setDefaultErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // state for holding the result (fr data viz) from backend
   const [resultData, setResultData] = useState(null);
   const [resultOpen, setResultOpen] = useState(false);
+  // Add state to track if charts should be shown
+  const [showCharts, setShowCharts] = useState(false);
+  // Store the inquiry text for charts
+  const [submittedInquiryText, setSubmittedInquiryText] = useState('');
 
   // form submission handler (what happens when user presses 'Submit')
   const submit = async (e) => {
@@ -59,9 +65,9 @@ function InquiryForm() {
     setDefaultErrors(errors);
 
     if (Object.keys(errors).length === 0) {
-      // alert('Form submitted');
       setSubmitMessage('');
       setSubmitError('');
+      setIsSubmitting(true);
 
       try {
         // try to post form data to backend
@@ -77,11 +83,15 @@ function InquiryForm() {
         setSubmitMessage('form submitted successfully!');
         setResultData(response.data);
         setResultOpen(true);
+        setSubmittedInquiryText(inquiryBody); // Store the inquiry text before clearing
+        setShowCharts(true); // Enable charts display
         resetForm();
       } catch (err) {
         // otherwise, show error message that we caught
         setSubmitError('coulnt submit form, pls try again.');
         console.error(err);
+      } finally {
+        setIsSubmitting(false);
       }
     }
   };
@@ -95,6 +105,18 @@ function InquiryForm() {
     setJobRole('');
     setInquiryBody('');
     setDefaultErrors({});
+    // Don't clear charts data here since user might want to see results after clearing form
+  };
+
+  // Function to clear all data including charts
+  const clearAll = () => {
+    resetForm();
+    setResultData(null);
+    setShowCharts(false);
+    setSubmittedInquiryText('');
+    setSubmitMessage('');
+    setSubmitError('');
+    setResultOpen(false);
   };
 
   return (
@@ -260,8 +282,20 @@ function InquiryForm() {
           Clear
         </Button>
 
-        <Button type="submit" variant="contained" color="primary">
-          Submit
+        {/* Add Clear All button if charts are showing */}
+        {showCharts && (
+          <Button type="button" onClick={clearAll} variant="outlined" color="secondary">
+            Clear All
+          </Button>
+        )}
+
+        <Button 
+          type="submit" 
+          variant="contained" 
+          color="primary"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? 'Submitting...' : 'Submit'}
         </Button>
       </Box>
       
@@ -276,6 +310,14 @@ function InquiryForm() {
         onClose={() => setResultOpen(false)}
         result={resultData}
       />
+
+      {/* Prediction result visualizations - only show after successful submission */}
+      {showCharts && resultData && submittedInquiryText && (
+        <DataVisualizations 
+          predictionResult={resultData} 
+          emailText={submittedInquiryText}
+        />
+      )}
     </Box>
   );
 }
