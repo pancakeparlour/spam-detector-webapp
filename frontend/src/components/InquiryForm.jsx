@@ -15,6 +15,8 @@ import {
   Typography,
   Tooltip,
   IconButton,
+  Snackbar,
+  Fade,
 } from '@mui/material';
 import { HelpOutline as HelpOutlineIcon } from '@mui/icons-material';
 import axios from 'axios';
@@ -39,6 +41,9 @@ function InquiryForm() {
 
   // state to toggle help tooltips
   const [showHelp, setShowHelp] = useState(false);
+
+  // state for tooltip that tells user to scroll down
+  const [showScrollPopup, setShowScrollPopup] = useState(false);
 
   // form submission handler (what happens when user presses 'Submit')
   const submit = async (e) => {
@@ -83,8 +88,12 @@ function InquiryForm() {
         setResultData(response.data);
         setResultOpen(true);
         resetForm();
+
+        // shows temporary tooltip saying to scroll
+        setShowScrollPopup(true);
+        setTimeout(() => setShowScrollPopup(false), 3000);
       } catch (err) {
-        setSubmitError('coulnt submit form, pls try again.');
+        setSubmitError('couldnt submit form, pls try again.');
         console.error(err);
       }
     }
@@ -315,25 +324,25 @@ function InquiryForm() {
         {/* Clear & Submit buttons box */}
         <Box sx={{ display: 'flex', gap: 2 }}>
           <Tooltip
-              title="Click to clear all fields in the form."
-              placement="bottom"
-              classes={{ tooltip: 'tooltip' }}
-              open={showHelp}
-            >
+            title="Click to clear all fields in the form."
+            placement="bottom"
+            classes={{ tooltip: 'tooltip' }}
+            open={showHelp}
+          >
             <Button type="button" onClick={resetForm} variant="outlined" color="primary">
               Clear
             </Button>
           </Tooltip>
-          
+
           <Tooltip
-              title="Click to submit the form."
-              placement="right"
-              classes={{ tooltip: 'tooltip' }}
-              open={showHelp}
-            >
-          <Button type="submit" variant="contained" color="primary">
-            Submit
-          </Button>
+            title="Click to submit the form."
+            placement="right"
+            classes={{ tooltip: 'tooltip' }}
+            open={showHelp}
+          >
+            <Button type="submit" variant="contained" color="primary">
+              Submit
+            </Button>
           </Tooltip>
         </Box>
 
@@ -349,6 +358,16 @@ function InquiryForm() {
           result={resultData}
         />
       </Box>
+
+      {/* Tooltip saying to scroll down */}
+      <Snackbar
+        open={showScrollPopup}
+        onClose={() => setShowScrollPopup(false)}
+        autoHideDuration={3000}
+        message="Scroll down to view your spam detection result"
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        TransitionComponent={Fade}
+      />
 
       {/* Footer */}
       <Box
