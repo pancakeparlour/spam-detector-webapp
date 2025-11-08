@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import InquiryResultPopup from './InquiryResultPopup';
-import DataVisualizations from './DataVisualizations';
+import DataVisualisations from './DataVisualisations';
 import {
   Alert,
   Box,
@@ -390,9 +390,9 @@ function InquiryForm() {
           result={resultData}
         />
 
-        {/* Prediction result visualizations - only show after successful submission */}
+        {/* Prediction result visualisations - only show after successful submission */}
         {showCharts && resultData && submittedInquiryText && (
-          <DataVisualizations 
+          <DataVisualisations 
             predictionResult={resultData} 
             emailText={submittedInquiryText}
           />
