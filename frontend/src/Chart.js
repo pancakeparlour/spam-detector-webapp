@@ -11,7 +11,7 @@ import {
   Legend
 } from 'chart.js';
 
-// Register Chart.js components
+//chart.js components
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -24,7 +24,7 @@ ChartJS.register(
   Legend
 );
 
-// Default chart options
+// chart options
 export const defaultChartOptions = {
   responsive: true,
   maintainAspectRatio: false,
@@ -64,7 +64,7 @@ export const radarChartOptions = {
   }
 };
 
-// Color scheme
+// colors for charts
 export const colors = {
   spam: '#ff6b6b',
   ham: '#4ecdc4',
@@ -73,7 +73,7 @@ export const colors = {
   hamBackground: 'rgba(78, 205, 196, 0.2)'
 };
 
-// Word lists for analysis
+// word lists for analysis
 export const wordLists = {
   spam: ['free', 'win', 'prize', 'urgent', 'limited', 'offer', 'click',
          'money', 'cash', 'deal', 'buy', 'cheap', 'discount', 
@@ -87,7 +87,7 @@ export const wordLists = {
         'productivity', 'goal-oriented', 'teamwork']
 };
 
-// Text analysis functions
+// text analysis functions
 export const analyzeText = (emailText) => {
   const words = emailText.toLowerCase().split(' ').filter(w => w.length > 0);
   const spamWords = words.filter(w => wordLists.spam.includes(w)).length;
@@ -109,7 +109,7 @@ export const analyzeText = (emailText) => {
   };
 };
 
-// Chart data generators
+// generate chart data
 export const generateProbabilityData = (spamProb) => ({
   labels: ['Spam', 'Ham'],
   datasets: [{
@@ -142,7 +142,7 @@ export const generateRadarData = (textAnalysis, spamProb, prediction) => ({
   }]
 });
 
-// Prediction analysis
+//prediction analysis
 export const analyzePrediction = (predictionResult) => {
   const prediction = predictionResult.label || (predictionResult.verdict ? 'spam' : 'ham');
   const spamProb = (predictionResult.probability || 0) * 100;

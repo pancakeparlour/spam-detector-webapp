@@ -18,11 +18,11 @@ const DataVisualizations = ({ predictionResult, emailText }) => {
     return <div style={{ padding: '2rem', textAlign: 'center' }}>Loading...</div>;
   }
 
-  // Analyze text and prediction using Chart.js utilities
+  // text analysis
   const textAnalysis = analyzeText(emailText);
   const { prediction, spamProb, confidence } = analyzePrediction(predictionResult);
 
-  // Generate chart data using Chart.js utilities
+  // generates chart data
   const probabilityData = generateProbabilityData(spamProb);
   const contentData = generateContentData(textAnalysis.spamWords, textAnalysis.hamWords, textAnalysis.neutralWords);
   const radarData = generateRadarData(textAnalysis, spamProb, prediction);
