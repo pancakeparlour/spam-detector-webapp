@@ -6,6 +6,9 @@ from pydantic import BaseModel, EmailStr
 from pathlib import Path
 import joblib
 
+# to help with model metrics endpoint
+from typing import Dict
+
 # we're gonna reuse the clean_text function
 from preprocessing import clean_text
 
@@ -53,9 +56,20 @@ app.add_middleware(
         allow_headers=["*"],
         )
 
+# a basic health check point
 @app.get("/")
 async def root():
     return {"message": "FastAPI backend connected"}
+
+# an endpoint to return the model metrics we preload above
+# could be useful to see metrics of the model behind running
+# in the backend
+@app.get("/metrics")
+async def fetch_metrics() -> Dict[str, float]:
+    if not metrics:
+        raise HTTPException(status_code=503, detail="backend model metrics currently unavailable")
+    # joblibs store as numpy types, we need in json. so cast to flt
+    return {name: float(value) for name, value in metrics.items()}
 
 # this is where the frontend stuff will come to
 # we're expecting a json body matching the jobinquiry model

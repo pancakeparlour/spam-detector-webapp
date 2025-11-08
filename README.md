@@ -1,5 +1,52 @@
-dev notes:
-- only use relative paths for imports
+# Spam Classifier App
 
-to fill in:
-- how to run the frontend, backend, how to regenerate model artifacts
+Set up the backend (FastAPI) and frontend (React) once, then run each in its own terminal. The steps work on macOS, Linux, and Windows (use PowerShell or Command Prompt).
+
+--------------------------------------------------------------
+
+## 1. Clone and open the project
+
+```
+git clone <repo-url>
+cd spam-classifier-app
+```
+
+## 2. Backend setup
+
+```
+cd backend
+python -m venv venv            # use python3 on mac/Linux if needed
+# Activate the environment:
+#   Windows:   venv\Scripts\activate
+#   mac/Linux: source venv/bin/activate
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+## 3. Frontend setup
+
+```
+cd ../frontend
+npm install
+```
+
+---
+
+## Running the app (you should use two terminals)
+
+### Terminal 1 – Backend
+
+```
+cd backend
+# activate the virtual environment as above
+uvicorn main:app --reload
+```
+
+### Terminal 2 – Frontend
+
+```
+cd frontend
+npm start
+```
+
+Open http://localhost:3000 for the React app. It communicates with the FastAPI backend at http://127.0.0.1:8000.

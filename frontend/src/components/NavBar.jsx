@@ -17,6 +17,7 @@ import {
   Menu as MenuIcon,
 } from '@mui/icons-material';
 import AboutUsPopup from './AboutUsPopup';
+import ModelMetrics from './ModelMetrics';
 
 const navItems = [
   { label: 'About Us' },
@@ -25,6 +26,7 @@ const navItems = [
 function NavBar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [aboutUsOpen, setAboutUsOpen] = useState(false); // moved inside component
+  const [metricsOpen, setMetricsOpen] = useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen((prev) => !prev);
@@ -56,6 +58,10 @@ function NavBar() {
             <ListItemText primary={item.label} />
           </ListItemButton>
         ))}
+        
+        <ListItemButton onClick={() => setMetricsOpen(true)}>
+          <ListItemText primary="Model Metrics" />
+        </ListItemButton>
       </List>
     </Box>
   );
@@ -97,6 +103,14 @@ function NavBar() {
                 marginLeft: 'auto',
               }}
             >
+              <Button
+                color="primary"
+                onClick={() => setMetricsOpen(true)}
+                sx={{ fontWeight: 500, textTransform: 'none' }}
+              >
+                Model Metrics
+              </Button>
+
               {navItems.map((item) => (
                 <Button
                   key={item.label}
@@ -150,10 +164,16 @@ function NavBar() {
         {drawerContent}
       </Drawer>
 
-      {/* About Us popup */}
+      {/* About Us popup*/}
       <AboutUsPopup
         open={aboutUsOpen}
         onClose={() => setAboutUsOpen(false)}
+      />
+
+        {/* model metrics popup*/}
+      <ModelMetrics
+        open={metricsOpen}
+        onClose={() => setMetricsOpen(false)}
       />
     </>
   );
