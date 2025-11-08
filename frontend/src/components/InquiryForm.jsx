@@ -80,7 +80,7 @@ function InquiryForm() {
           inquiryBody,
         });
         // set the submit msg and reset the form
-        setSubmitMessage('form submitted successfully!');
+        setSubmitMessage('Form submitted successfully!');
         setResultData(response.data);
         setResultOpen(true);
         setSubmittedInquiryText(inquiryBody); // Store the inquiry text before clearing
@@ -88,7 +88,7 @@ function InquiryForm() {
         resetForm();
       } catch (err) {
         // otherwise, show error message that we caught
-        setSubmitError('coulnt submit form, pls try again.');
+        setSubmitError('Could not submit form, please try again.');
         console.error(err);
       } finally {
         setIsSubmitting(false);
