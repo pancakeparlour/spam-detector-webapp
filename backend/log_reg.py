@@ -58,7 +58,7 @@ def main():
     
     # Text vectorization using TfidfVectorizer with parameters 
     # to limit features and remove stop words 
-    tfidf = TfidfVectorizer(stop_words='english', max_features=1000)
+    tfidf = TfidfVectorizer(stop_words='english', max_features=5000)
     X = tfidf.fit_transform(X_text)
 
     # Train-test split
@@ -80,13 +80,13 @@ def main():
     
     # some metrics stored in a dictionary for further use if needed
     metrics = {
-    "train_accuracy": accuracy_score(y_train, y_train_pred),
-    "test_accuracy": accuracy_score(y_test, y_test_pred),
-    "precision": precision_score(y_test, y_test_pred),
-    "recall": recall_score(y_test, y_test_pred),
-    "f1": f1_score(y_test, y_test_pred),
-    "roc_auc": roc_auc_score(y_test, clf.predict_proba(X_test)[:, 1]),
-}
+        "train_accuracy": accuracy_score(y_train, y_train_pred),
+        "test_accuracy": accuracy_score(y_test, y_test_pred),
+        "precision": precision_score(y_test, y_test_pred),
+        "recall": recall_score(y_test, y_test_pred),
+        "f1": f1_score(y_test, y_test_pred),
+        "roc_auc": roc_auc_score(y_test, clf.predict_proba(X_test)[:, 1])
+    }
     # we'll save the metrics for later
     joblib.dump(metrics, MODEL_DIR / 'clf_metrics.joblib')
 
@@ -102,7 +102,8 @@ def main():
         "Dear user, you have won a prize! claim now verification required",
         "Meeting agenda attached for project update discussion", 
         "Urgent: verify your bank account immediately or account will be closed",
-        "Lunch plans? Let me know your preference for the restaurant"
+        "Lunch plans? Let me know your preference for the restaurant",
+        "Welcome to the October edition of our garden club newsletter! This week, we’re sharing tips for maximizing your autumn harvest and preparing for winter. Check out our article on soil preparation and recommended vegetables for cool weather. Don’t forget to join us on Saturday for our monthly gardening workshop—no registration necessary. Thanks for being part of our community! The Green Thumb Club Team"
     ]
 
     for example_email in test_emails:

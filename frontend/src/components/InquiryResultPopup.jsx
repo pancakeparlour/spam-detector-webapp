@@ -24,7 +24,7 @@ function InquiryResultPopup({ open, onClose, result }) {
             </Typography>
             {/* eg metric 2: spam probability */}
             <Typography variant="body1">
-              spam prob: { (result.probability * 100).toFixed(1) }%
+              Spam prob: { (result.probability * 100).toFixed(1) }%
             </Typography>
             {/* eg metric 3: model metrics: */}
             {Object.entries(result.metrics).map(([key, value]) => (
@@ -35,7 +35,7 @@ function InquiryResultPopup({ open, onClose, result }) {
           </>
         ) : ( // if no result comes back, show this msg:
           <Typography variant="body1">
-            no data recieved! ..change this things size as necessary. use rem values for consistency.
+            No data received! ..change this things size as necessary. use rem values for consistency.
           </Typography>
         )}
       </DialogContent>
