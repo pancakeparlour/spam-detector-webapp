@@ -101,7 +101,7 @@ const DataVisualizations = ({ predictionResult, emailText }) => {
       borderRadius: '12px'
     }}>
       <h3 style={{ textAlign: 'center', marginBottom: '2rem', color: '#2c3e50' }}>
-        📊 Email Analysis
+        Email Analysis
       </h3>
 
       {/* Summary */}
@@ -144,7 +144,7 @@ const DataVisualizations = ({ predictionResult, emailText }) => {
         gap: '1.5rem' 
       }}>
         <div style={{ backgroundColor: 'white', padding: '1rem', borderRadius: '12px', height: '300px' }}>
-          <h4 style={{ textAlign: 'center', margin: '0 0 1rem 0' }}>📈 Prediction</h4>
+          <h4 style={{ textAlign: 'center', margin: '0 0 1rem 0' }}>Email Prediction</h4>
           <div style={{ height: '240px' }}>
             <Bar data={probabilityData} options={{
               ...options,
@@ -154,7 +154,7 @@ const DataVisualizations = ({ predictionResult, emailText }) => {
         </div>
 
         <div style={{ backgroundColor: 'white', padding: '1rem', borderRadius: '12px', height: '300px' }}>
-          <h4 style={{ textAlign: 'center', margin: '0 0 1rem 0' }}>📝 Content</h4>
+          <h4 style={{ textAlign: 'center', margin: '0 0 1rem 0' }}>Content</h4>
           <div style={{ height: '240px' }}>
             <Pie data={contentData} options={{
               ...options,
@@ -164,7 +164,7 @@ const DataVisualizations = ({ predictionResult, emailText }) => {
         </div>
 
         <div style={{ backgroundColor: 'white', padding: '1rem', borderRadius: '12px', height: '300px' }}>
-          <h4 style={{ textAlign: 'center', margin: '0 0 1rem 0' }}>🎯 Risk Profile</h4>
+          <h4 style={{ textAlign: 'center', margin: '0 0 1rem 0' }}>Risk Profile</h4>
           <div style={{ height: '220px' }}>
             <Radar data={radarData} options={{
               ...options,
@@ -189,10 +189,10 @@ const DataVisualizations = ({ predictionResult, emailText }) => {
         gap: '1rem',
         fontSize: '0.9rem'
       }}>
-        <span>📝 {capsCount} CAPS</span>
-        <span>❗ {exclamationCount} exclamations</span>
-        <span>🔢 {numberCount} numbers</span>
-        <span>📊 {spamProb.toFixed(1)}% spam risk</span>
+        <span>{capsCount} CAPS</span>
+        <span>{exclamationCount} exclamations</span>
+        <span>{numberCount} numbers</span>
+        <span>{spamProb.toFixed(1)}% spam risk</span>
       </div>
     </div>
   );
