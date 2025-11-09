@@ -4,23 +4,24 @@ Set up the backend (FastAPI) and frontend (React) once, then run each in its own
 
 --------------------------------------------------------------
 
-## 1. Clone and open the project
+## 1. Find and open the project
 
 ```
-git clone <repo-url>
-cd spam-detector-webapp
+# unzip the zip file in your file explorer
+# open terminal, then navigate to the folder like so
+cd /Users/your-name/downloads/spam-detector-webapp              #replace this path with the actual file path you have saved the folder to
 ```
 
 ## 2. Backend setup
 
 ```
 cd backend
-python -m venv venv            # use python3 on mac/Linux if needed
+python -m venv venv                        # use python3 on mac/Linux if needed
 # Activate the environment:
 #   Windows:   venv\Scripts\activate
 #   mac/Linux: source venv/bin/activate
 pip install --upgrade pip
-pip install -r requirements.txt
+pip install -r requirements.txt            # this txt file also include the pakcages used for the frontend
 ```
 
 ## 3. Frontend setup
