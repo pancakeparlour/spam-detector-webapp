@@ -8,7 +8,7 @@ Set up the backend (FastAPI) and frontend (React) once, then run each in its own
 
 ```
 git clone <repo-url>
-cd spam-classifier-app
+cd spam-detector-webapp
 ```
 
 ## 2. Backend setup
