@@ -146,25 +146,28 @@ function InquiryForm() {
           gap: 3,
         }}
       >
-        {/* Help button at the top */}
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <IconButton
-            color="inherit"
-            size="large"
-            onClick={() => setShowHelp((prev) => !prev)}
-          >
-            <HelpOutlineIcon />
-          </IconButton>
-        </Box>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-start' }}>
 
-        {/* Title box */}
-        <Box>
-          <Typography variant="h4" component="h2" gutterBottom>
-            Interested in a career with us?
-          </Typography>
-          <Typography variant="body1" color="text.secondary">
-            Fill out the inquiry form below, and we will let you know of any job opportunities.
-          </Typography>
+          {/* Title box */}
+          <Box sx={{ width: '50%', mb: 2 }}>
+            <Typography variant="h4" component="h2" gutterBottom>
+              Interested in a career with us?
+            </Typography>
+            <Typography variant="body1" color="text.secondary">
+              Fill out the inquiry form below, and we will let you know of any job opportunities.
+            </Typography>
+          </Box>
+
+          {/* Help button at the top */}
+          <Box sx={{ width: '50%', display: 'flex', justifyContent: 'flex-end', pt: 0.5 }}>
+            <IconButton
+              color="inherit"
+              size="large"
+              onClick={() => setShowHelp((prev) => !prev)}
+            >
+              <HelpOutlineIcon />
+            </IconButton>
+          </Box>
         </Box>
 
         {/* Form Content ('Your Details' & 'Inquiry' sections)*/}

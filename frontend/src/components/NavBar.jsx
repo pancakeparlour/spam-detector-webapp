@@ -123,7 +123,7 @@ function NavBar() {
                   onClick={() => {
                     if (item.label === 'About Us') setAboutUsOpen(true);
                   }}
-                  sx={{ fontWeight: 500, textTransform: 'none' }}
+                  sx={{ fontWeight: 500, textTransform: 'none', '&:hover': { backgroundColor: '#b4b4b4ff' } }}
                 >
                   {item.label}
                 </Button>
